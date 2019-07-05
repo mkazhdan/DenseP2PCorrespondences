@@ -42,7 +42,6 @@ CMCF_VIEWER_SOURCE=CMCFViewer/CMCFViewer.cpp
 OPTICAL_FLOW_VIEWER_SOURCE=OpticalFlowViewer/OpticalFlowViewer.cpp
 GET_CORRESPONDENCES_SOURCE=GetCorrespondences/GetCorrespondences.cpp
 GET_HKS_SOURCE=GetHKS/GetHKS.cpp
-GET_SPECTRUM_SOURCE=GetSpectrum/GetSpectrum.cpp
 
 SOFT_TARGET=Soft1.0
 AUTHALIC_EVOLUTION_VIEWER_TARGET=AuthalicEvolutionViewer
@@ -50,7 +49,6 @@ CMCF_VIEWER_TARGET=CMCFViewer
 OPTICAL_FLOW_VIEWER_TARGET=OpticalFlowViewer
 GET_CORRESPONDENCES_TARGET=GetCorrespondences
 GET_HKS_TARGET=GetHKS
-GET_SPECTRUM_TARGET=GetSpectrum
 
 
 CFLAGS += -fpermissive -fopenmp -Wno-deprecated -std=c++11 -DNO_OPEN_GL
@@ -76,7 +74,6 @@ CMCF_VIEWER_OBJECTS              =$(addprefix $(OBJECTS), $(addsuffix .o, $(base
 OPTICAL_FLOW_VIEWER_OBJECTS      =$(addprefix $(OBJECTS), $(addsuffix .o, $(basename $(OPTICAL_FLOW_VIEWER_SOURCE))))
 GET_CORRESPONDENCES_OBJECTS      =$(addprefix $(OBJECTS), $(addsuffix .o, $(basename $(GET_CORRESPONDENCES_SOURCE))))
 GET_HKS_OBJECTS                  =$(addprefix $(OBJECTS), $(addsuffix .o, $(basename $(GET_HKS_SOURCE))))
-GET_SPECTRUM_OBJECTS             =$(addprefix $(OBJECTS), $(addsuffix .o, $(basename $(GET_SPECTRUM_SOURCE))))
 
 all: CFLAGS += $(CFLAGS_RELEASE)
 all: LFLAGS += $(LFLAGS_RELEASE)
@@ -87,7 +84,6 @@ all: $(BIN)$(CMCF_VIEWER_TARGET)
 all: $(BIN)$(OPTICAL_FLOW_VIEWER_TARGET)
 all: $(BIN)$(GET_CORRESPONDENCES_TARGET)
 all: $(BIN)$(GET_HKS_TARGET)
-all: $(BIN)$(GET_SPECTRUM_TARGET)
 
 debug: CFLAGS += $(CFLAGS_DEBUG)
 debug: LFLAGS += $(LFLAGS_DEBUG)
@@ -98,7 +94,6 @@ debug: $(BIN)$(CMCF_VIEWER_TARGET)
 debug: $(BIN)$(OPTICAL_FLOW_VIEWER_TARGET)
 debug: $(BIN)$(GET_CORRESPONDENCES_TARGET)
 debug: $(BIN)$(GET_HKS_TARGET)
-debug: $(BIN)$(GET_SPECTRUM_TARGET)
 
 clean:
 	rm -r $(BIN)
@@ -111,7 +106,6 @@ $(BIN):
 	$(MD) -p $(OBJECTS)$(OPTICAL_FLOW_VIEWER_TARGET)
 	$(MD) -p $(OBJECTS)$(GET_CORRESPONDENCES_TARGET)
 	$(MD) -p $(OBJECTS)$(GET_HKS_TARGET)
-	$(MD) -p $(OBJECTS)$(GET_SPECTRUM_TARGET)
 
 $(BIN)$(SOFT_TARGET): $(SOFT_OBJECTS)
 
@@ -129,9 +123,6 @@ $(BIN)$(GET_CORRESPONDENCES_TARGET): $(GET_CORRESPONDENCES_OBJECTS) $(SOFT_OBJEC
 
 $(BIN)$(GET_HKS_TARGET): $(GET_HKS_OBJECTS) $(SOFT_OBJECTS)
 	$(CXX) -o $@ $(SOFT_OBJECTS) $(GET_HKS_OBJECTS) $(LFLAGS)
-
-$(BIN)$(GET_SPECTRUM_TARGET): $(GET_SPECTRUM_OBJECTS) $(SOFT_OBJECTS)
-	$(CXX) -o $@ $(SOFT_OBJECTS) $(GET_SPECTRUM_OBJECTS) $(LFLAGS)
 
 $(BIN)%.o: $(LIBRARY_SRC)%.c
 	$(CC) -c -o $@ $(CFLAGS) $(INCLUDE) $<
