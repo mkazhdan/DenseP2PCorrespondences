@@ -1,0 +1,195 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2005
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Soft", "SOFT1.0\Soft.vcxproj", "{309F1A4F-6E10-4EA2-AA9D-65B8618ABB11}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Misha", "Misha", "{6DAADF77-C04A-45FE-8C45-7A4DED07D0C0}"
+	ProjectSection(SolutionItems) = preProject
+		Include\Misha\Algebra.h = Include\Misha\Algebra.h
+		Include\Misha\Array.h = Include\Misha\Array.h
+		Include\Misha\Array.inl = Include\Misha\Array.inl
+		Include\Misha\AuthalicEvolution.h = Include\Misha\AuthalicEvolution.h
+		Include\Misha\AuthalicEvolution.inl = Include\Misha\AuthalicEvolution.inl
+		Include\Misha\BMP.h = Include\Misha\BMP.h
+		Include\Misha\BMP.inl = Include\Misha\BMP.inl
+		Include\Misha\CircularArray.h = Include\Misha\CircularArray.h
+		Include\Misha\CircularArray.inl = Include\Misha\CircularArray.inl
+		Include\Misha\CMCF.h = Include\Misha\CMCF.h
+		Include\Misha\CMCF.inl = Include\Misha\CMCF.inl
+		Include\Misha\CmdLineParser.h = Include\Misha\CmdLineParser.h
+		Include\Misha\CmdLineParser.inl = Include\Misha\CmdLineParser.inl
+		Include\Misha\Complex.h = Include\Misha\Complex.h
+		Include\Misha\Complex.inl = Include\Misha\Complex.inl
+		Include\Misha\FEM.BasisInfo.h = Include\Misha\FEM.BasisInfo.h
+		Include\Misha\FEM.h = Include\Misha\FEM.h
+		Include\Misha\FEM.inl = Include\Misha\FEM.inl
+		Include\Misha\Fourier.h = Include\Misha\Fourier.h
+		Include\Misha\Fourier1D.inl = Include\Misha\Fourier1D.inl
+		Include\Misha\Fourier2D.inl = Include\Misha\Fourier2D.inl
+		Include\Misha\FourierS2.inl = Include\Misha\FourierS2.inl
+		Include\Misha\FourierSO3.inl = Include\Misha\FourierSO3.inl
+		Include\Misha\Geometry.h = Include\Misha\Geometry.h
+		Include\Misha\Geometry.inl = Include\Misha\Geometry.inl
+		Include\Misha\Image.h = Include\Misha\Image.h
+		Include\Misha\JPEG.h = Include\Misha\JPEG.h
+		Include\Misha\JPEG.inl = Include\Misha\JPEG.inl
+		Include\Misha\MemoryUsage.h = Include\Misha\MemoryUsage.h
+		Include\Misha\MoebiusCentering.h = Include\Misha\MoebiusCentering.h
+		Include\Misha\MoebiusCentering.inl = Include\Misha\MoebiusCentering.inl
+		Include\Misha\OpticalFlow.h = Include\Misha\OpticalFlow.h
+		Include\Misha\OpticalFlow.inl = Include\Misha\OpticalFlow.inl
+		Include\Misha\Ply.h = Include\Misha\Ply.h
+		Include\Misha\Ply.inl = Include\Misha\Ply.inl
+		Include\Misha\PlyFile.h = Include\Misha\PlyFile.h
+		Include\Misha\PlyFile.inl = Include\Misha\PlyFile.inl
+		Include\Misha\PNG.h = Include\Misha\PNG.h
+		Include\Misha\PNG.inl = Include\Misha\PNG.inl
+		Include\Misha\RotationGrid.h = Include\Misha\RotationGrid.h
+		Include\Misha\RotationGrid.inl = Include\Misha\RotationGrid.inl
+		Include\Misha\Signals.h = Include\Misha\Signals.h
+		Include\Misha\SO3Alignment.h = Include\Misha\SO3Alignment.h
+		Include\Misha\SO3Alignment.inl = Include\Misha\SO3Alignment.inl
+		Include\Misha\Solver.h = Include\Misha\Solver.h
+		Include\Misha\SourceToTargetCorrespondence.h = Include\Misha\SourceToTargetCorrespondence.h
+		Include\Misha\SparseMatrix.h = Include\Misha\SparseMatrix.h
+		Include\Misha\SparseMatrix.inl = Include\Misha\SparseMatrix.inl
+		Include\Misha\SparseMatrixInterface.h = Include\Misha\SparseMatrixInterface.h
+		Include\Misha\SparseMatrixInterface.inl = Include\Misha\SparseMatrixInterface.inl
+		Include\Misha\SphericalGeometry.h = Include\Misha\SphericalGeometry.h
+		Include\Misha\SphericalGeometry.inl = Include\Misha\SphericalGeometry.inl
+		Include\Misha\SphericalGrid.h = Include\Misha\SphericalGrid.h
+		Include\Misha\SphericalGrid.inl = Include\Misha\SphericalGrid.inl
+		Include\Misha\SphericalSignals.h = Include\Misha\SphericalSignals.h
+		Include\Misha\SphericalSignals.inl = Include\Misha\SphericalSignals.inl
+		Include\Misha\SquareGrid.h = Include\Misha\SquareGrid.h
+		Include\Misha\SquareGrid.inl = Include\Misha\SquareGrid.inl
+		Include\Misha\Timer.h = Include\Misha\Timer.h
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AuthalicEvolutionViewer", "AuthalicEvolutionViewer\AuthalicEvolutionViewer.vcxproj", "{0E3E9735-FC54-4E53-947F-1565EEB910C2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B5899B32-FAC2-477E-99AA-86736B97F2FC} = {B5899B32-FAC2-477E-99AA-86736B97F2FC}
+		{309F1A4F-6E10-4EA2-AA9D-65B8618ABB11} = {309F1A4F-6E10-4EA2-AA9D-65B8618ABB11}
+		{0BE55595-4080-4265-82AF-51108EC956B2} = {0BE55595-4080-4265-82AF-51108EC956B2}
+		{D3D173AB-D306-4179-BEC4-95CE1B14E647} = {D3D173AB-D306-4179-BEC4-95CE1B14E647}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpticalFlowViewer", "OpticalFlowViewer\OpticalFlowViewer.vcxproj", "{00AA834B-5AD4-4195-9FD6-2669703D4944}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B5899B32-FAC2-477E-99AA-86736B97F2FC} = {B5899B32-FAC2-477E-99AA-86736B97F2FC}
+		{309F1A4F-6E10-4EA2-AA9D-65B8618ABB11} = {309F1A4F-6E10-4EA2-AA9D-65B8618ABB11}
+		{0BE55595-4080-4265-82AF-51108EC956B2} = {0BE55595-4080-4265-82AF-51108EC956B2}
+		{D3D173AB-D306-4179-BEC4-95CE1B14E647} = {D3D173AB-D306-4179-BEC4-95CE1B14E647}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CMCFViewer", "CMCFViewer\CMCFViewer.vcxproj", "{897DCB43-DCB6-462A-BED3-9A2FDF395292}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B5899B32-FAC2-477E-99AA-86736B97F2FC} = {B5899B32-FAC2-477E-99AA-86736B97F2FC}
+		{309F1A4F-6E10-4EA2-AA9D-65B8618ABB11} = {309F1A4F-6E10-4EA2-AA9D-65B8618ABB11}
+		{0BE55595-4080-4265-82AF-51108EC956B2} = {0BE55595-4080-4265-82AF-51108EC956B2}
+		{D3D173AB-D306-4179-BEC4-95CE1B14E647} = {D3D173AB-D306-4179-BEC4-95CE1B14E647}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GetHKS", "GetHKS\GetHKS.vcxproj", "{89647946-48CF-40B3-AE00-21962A1C0BF8}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JPEG", "JPEG\JPEG.vcxproj", "{0BE55595-4080-4265-82AF-51108EC956B2}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PNG", "PNG\PNG.vcxproj", "{B5899B32-FAC2-477E-99AA-86736B97F2FC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZLIB", "ZLIB\ZLIB.vcxproj", "{D3D173AB-D306-4179-BEC4-95CE1B14E647}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GetCorrespondences", "GetCorrespondences\GetCorrespondences.vcxproj", "{678C5EA8-94DD-467F-AED3-341FBC53DBB7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{309F1A4F-6E10-4EA2-AA9D-65B8618ABB11} = {309F1A4F-6E10-4EA2-AA9D-65B8618ABB11}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{309F1A4F-6E10-4EA2-AA9D-65B8618ABB11}.Debug|x64.ActiveCfg = Debug|x64
+		{309F1A4F-6E10-4EA2-AA9D-65B8618ABB11}.Debug|x64.Build.0 = Debug|x64
+		{309F1A4F-6E10-4EA2-AA9D-65B8618ABB11}.Debug|x86.ActiveCfg = Debug|Win32
+		{309F1A4F-6E10-4EA2-AA9D-65B8618ABB11}.Debug|x86.Build.0 = Debug|Win32
+		{309F1A4F-6E10-4EA2-AA9D-65B8618ABB11}.Release|x64.ActiveCfg = Release|x64
+		{309F1A4F-6E10-4EA2-AA9D-65B8618ABB11}.Release|x64.Build.0 = Release|x64
+		{309F1A4F-6E10-4EA2-AA9D-65B8618ABB11}.Release|x86.ActiveCfg = Release|Win32
+		{309F1A4F-6E10-4EA2-AA9D-65B8618ABB11}.Release|x86.Build.0 = Release|Win32
+		{0E3E9735-FC54-4E53-947F-1565EEB910C2}.Debug|x64.ActiveCfg = Debug|x64
+		{0E3E9735-FC54-4E53-947F-1565EEB910C2}.Debug|x64.Build.0 = Debug|x64
+		{0E3E9735-FC54-4E53-947F-1565EEB910C2}.Debug|x86.ActiveCfg = Debug|Win32
+		{0E3E9735-FC54-4E53-947F-1565EEB910C2}.Debug|x86.Build.0 = Debug|Win32
+		{0E3E9735-FC54-4E53-947F-1565EEB910C2}.Release|x64.ActiveCfg = Release|x64
+		{0E3E9735-FC54-4E53-947F-1565EEB910C2}.Release|x64.Build.0 = Release|x64
+		{0E3E9735-FC54-4E53-947F-1565EEB910C2}.Release|x86.ActiveCfg = Release|Win32
+		{0E3E9735-FC54-4E53-947F-1565EEB910C2}.Release|x86.Build.0 = Release|Win32
+		{00AA834B-5AD4-4195-9FD6-2669703D4944}.Debug|x64.ActiveCfg = Debug|x64
+		{00AA834B-5AD4-4195-9FD6-2669703D4944}.Debug|x64.Build.0 = Debug|x64
+		{00AA834B-5AD4-4195-9FD6-2669703D4944}.Debug|x86.ActiveCfg = Debug|Win32
+		{00AA834B-5AD4-4195-9FD6-2669703D4944}.Debug|x86.Build.0 = Debug|Win32
+		{00AA834B-5AD4-4195-9FD6-2669703D4944}.Release|x64.ActiveCfg = Release|x64
+		{00AA834B-5AD4-4195-9FD6-2669703D4944}.Release|x64.Build.0 = Release|x64
+		{00AA834B-5AD4-4195-9FD6-2669703D4944}.Release|x86.ActiveCfg = Release|Win32
+		{00AA834B-5AD4-4195-9FD6-2669703D4944}.Release|x86.Build.0 = Release|Win32
+		{897DCB43-DCB6-462A-BED3-9A2FDF395292}.Debug|x64.ActiveCfg = Debug|x64
+		{897DCB43-DCB6-462A-BED3-9A2FDF395292}.Debug|x64.Build.0 = Debug|x64
+		{897DCB43-DCB6-462A-BED3-9A2FDF395292}.Debug|x86.ActiveCfg = Debug|Win32
+		{897DCB43-DCB6-462A-BED3-9A2FDF395292}.Debug|x86.Build.0 = Debug|Win32
+		{897DCB43-DCB6-462A-BED3-9A2FDF395292}.Release|x64.ActiveCfg = Release|x64
+		{897DCB43-DCB6-462A-BED3-9A2FDF395292}.Release|x64.Build.0 = Release|x64
+		{897DCB43-DCB6-462A-BED3-9A2FDF395292}.Release|x86.ActiveCfg = Release|Win32
+		{897DCB43-DCB6-462A-BED3-9A2FDF395292}.Release|x86.Build.0 = Release|Win32
+		{89647946-48CF-40B3-AE00-21962A1C0BF8}.Debug|x64.ActiveCfg = Debug|x64
+		{89647946-48CF-40B3-AE00-21962A1C0BF8}.Debug|x64.Build.0 = Debug|x64
+		{89647946-48CF-40B3-AE00-21962A1C0BF8}.Debug|x86.ActiveCfg = Debug|Win32
+		{89647946-48CF-40B3-AE00-21962A1C0BF8}.Debug|x86.Build.0 = Debug|Win32
+		{89647946-48CF-40B3-AE00-21962A1C0BF8}.Release|x64.ActiveCfg = Release|x64
+		{89647946-48CF-40B3-AE00-21962A1C0BF8}.Release|x64.Build.0 = Release|x64
+		{89647946-48CF-40B3-AE00-21962A1C0BF8}.Release|x86.ActiveCfg = Release|Win32
+		{89647946-48CF-40B3-AE00-21962A1C0BF8}.Release|x86.Build.0 = Release|Win32
+		{0BE55595-4080-4265-82AF-51108EC956B2}.Debug|x64.ActiveCfg = Debug|x64
+		{0BE55595-4080-4265-82AF-51108EC956B2}.Debug|x64.Build.0 = Debug|x64
+		{0BE55595-4080-4265-82AF-51108EC956B2}.Debug|x86.ActiveCfg = Debug|Win32
+		{0BE55595-4080-4265-82AF-51108EC956B2}.Debug|x86.Build.0 = Debug|Win32
+		{0BE55595-4080-4265-82AF-51108EC956B2}.Release|x64.ActiveCfg = Release|x64
+		{0BE55595-4080-4265-82AF-51108EC956B2}.Release|x64.Build.0 = Release|x64
+		{0BE55595-4080-4265-82AF-51108EC956B2}.Release|x86.ActiveCfg = Release|Win32
+		{0BE55595-4080-4265-82AF-51108EC956B2}.Release|x86.Build.0 = Release|Win32
+		{B5899B32-FAC2-477E-99AA-86736B97F2FC}.Debug|x64.ActiveCfg = Debug|x64
+		{B5899B32-FAC2-477E-99AA-86736B97F2FC}.Debug|x64.Build.0 = Debug|x64
+		{B5899B32-FAC2-477E-99AA-86736B97F2FC}.Debug|x86.ActiveCfg = Debug|Win32
+		{B5899B32-FAC2-477E-99AA-86736B97F2FC}.Debug|x86.Build.0 = Debug|Win32
+		{B5899B32-FAC2-477E-99AA-86736B97F2FC}.Release|x64.ActiveCfg = Release|x64
+		{B5899B32-FAC2-477E-99AA-86736B97F2FC}.Release|x64.Build.0 = Release|x64
+		{B5899B32-FAC2-477E-99AA-86736B97F2FC}.Release|x86.ActiveCfg = Release|Win32
+		{B5899B32-FAC2-477E-99AA-86736B97F2FC}.Release|x86.Build.0 = Release|Win32
+		{D3D173AB-D306-4179-BEC4-95CE1B14E647}.Debug|x64.ActiveCfg = Debug|x64
+		{D3D173AB-D306-4179-BEC4-95CE1B14E647}.Debug|x64.Build.0 = Debug|x64
+		{D3D173AB-D306-4179-BEC4-95CE1B14E647}.Debug|x86.ActiveCfg = Debug|Win32
+		{D3D173AB-D306-4179-BEC4-95CE1B14E647}.Debug|x86.Build.0 = Debug|Win32
+		{D3D173AB-D306-4179-BEC4-95CE1B14E647}.Release|x64.ActiveCfg = Release|x64
+		{D3D173AB-D306-4179-BEC4-95CE1B14E647}.Release|x64.Build.0 = Release|x64
+		{D3D173AB-D306-4179-BEC4-95CE1B14E647}.Release|x86.ActiveCfg = Release|Win32
+		{D3D173AB-D306-4179-BEC4-95CE1B14E647}.Release|x86.Build.0 = Release|Win32
+		{678C5EA8-94DD-467F-AED3-341FBC53DBB7}.Debug|x64.ActiveCfg = Debug|x64
+		{678C5EA8-94DD-467F-AED3-341FBC53DBB7}.Debug|x64.Build.0 = Debug|x64
+		{678C5EA8-94DD-467F-AED3-341FBC53DBB7}.Debug|x86.ActiveCfg = Debug|Win32
+		{678C5EA8-94DD-467F-AED3-341FBC53DBB7}.Debug|x86.Build.0 = Debug|Win32
+		{678C5EA8-94DD-467F-AED3-341FBC53DBB7}.Release|x64.ActiveCfg = Release|x64
+		{678C5EA8-94DD-467F-AED3-341FBC53DBB7}.Release|x64.Build.0 = Release|x64
+		{678C5EA8-94DD-467F-AED3-341FBC53DBB7}.Release|x86.ActiveCfg = Release|Win32
+		{678C5EA8-94DD-467F-AED3-341FBC53DBB7}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B5AE04DA-1A3F-49EE-AA8B-9AB8FBD739BE}
+	EndGlobalSection
+EndGlobal
