@@ -29,7 +29,7 @@ DAMAGE.
 namespace SphericalGeometry
 {
 	template< typename Real >
-	void SO3Alignment< Real >::SetCorrelation( unsigned int gridNum , SphericalGrid< Real > source[] , SphericalGrid< Real > target[] , Real sigma , bool removeDC , RotationGrid< Real > &correlation )
+	void SO3Alignment< Real >::SetCorrelation( unsigned int gridNum , SphericalGrid< Real > source[] , SphericalGrid< Real > target[] , Parameters parameters , RotationGrid< Real > &correlation )
 	{
 		FourierKeySO3< Real> keySO3; 
 		HarmonicTransform< Real > hForm; 
@@ -43,6 +43,7 @@ namespace SphericalGeometry
 		if( !keySO3.resize( resolution ) ) fprintf( stderr , "[ERROR] SO3Alignment< Real >::SetCorrelation: Could not allocate key: %d\n" , resolution ) , exit( 0 ); 
 		for( int i=0 ; i<keySO3.bandWidth(); i++ ) for( int j=0 ; j<=i ; j++ ) for( int k=0 ; k<=i ; k++ ) keySO3(i,j,k) = 0;
 
+		Real sigma = parameters.sigma();
 		for( unsigned int g=0 ; g<gridNum ; g++ )
 		{
 			hForm.ForwardFourier( source[g] , sourceKey );
@@ -56,7 +57,7 @@ namespace SphericalGeometry
 					for( int j=0 ; j<=i ; j++ ) sourceKey(i,j) *= scl , targetKey(i,j) *= scl;
 				}
 			}
-			if( removeDC ) sourceKey(0,0) *= (Real)0 , targetKey(0,0) *= (Real)0;
+			if( parameters.removeDC ) sourceKey(0,0) *= (Real)0 , targetKey(0,0) *= (Real)0;
 
 			// Compute the Wigner-D coefficients
 #pragma omp parallel for
@@ -73,13 +74,18 @@ namespace SphericalGeometry
 	}
 
 	template< typename Real >
-	unsigned int SO3Alignment< Real >::TopNRotations( unsigned int N , unsigned int gridNum , SphericalGrid< Real > source[] , SphericalGrid< Real > target[] , Real sigma , bool removeDC , Real separation , Real correlationFraction , std::vector< Real > &correlationValues , std::vector< SquareMatrix< Real , 3 > > &rotations )
+	unsigned int SO3Alignment< Real >::TopNRotations( unsigned int gridNum , SphericalGrid< Real > source[] , SphericalGrid< Real > target[] , Parameters parameters , std::vector< Real > &correlationValues , std::vector< SquareMatrix< Real , 3 > > &rotations )
+	{
+		RotationGrid< Real > correlation;
+		SetCorrelation( gridNum , source , target , parameters , correlation );
+		return TopNRotations( correlation , parameters , correlationValues , rotations );
+	}
+
+	template< typename Real >
+	unsigned int SO3Alignment< Real >::TopNRotations( const RotationGrid< Real > &correlation , Parameters parameters , std::vector< Real > &correlationValues , std::vector< SquareMatrix< Real , 3 > > &rotations )
 	{
 		correlationValues.resize( 0 );
 		rotations.resize( 0 );
-
-		RotationGrid< Real > correlation;
-		SetCorrelation( gridNum , source , target , sigma , removeDC , correlation );
 
 		// Find the top correlation values
 		auto RotationMatrix = [&]( int x , int y , int z )
@@ -93,12 +99,12 @@ namespace SphericalGeometry
 
 		auto ValidRotation = [&]( SquareMatrix< Real , 3 > R , unsigned int n , Real correlation )
 		{
-			for( unsigned int i=0 ; i<n ; i++ ) if( SquareMatrix< Real , 3 >::SquareNorm( rotations[i].inverse() * R - SquareMatrix< Real , 3 >::Identity() )<separation ) return false;
-			if( n && correlation<correlationValues[0]*correlationFraction ) return false;
+			for( unsigned int i=0 ; i<n ; i++ ) if( SquareMatrix< Real , 3 >::SquareNorm( rotations[i].inverse() * R - SquareMatrix< Real , 3 >::Identity() )<parameters.rotationSeparation ) return false;
+			if( n && correlation<correlationValues[0]*parameters.correlationFraction ) return false;
 			return true;
 		};
 
-		for( unsigned int n=0 ; n<N ; n++ )
+		for( unsigned int n=0 ; n<parameters.maxRotations ; n++ )
 		{
 			bool found = false;
 			Real maxCorrelation = 0;
@@ -106,7 +112,7 @@ namespace SphericalGeometry
 			for( int x=0 ; x<correlation.resolution() ; x++ ) for( int y=0 ; y<correlation.resolution() ; y++ ) for( int z=0 ; z<correlation.resolution() ; z++ ) if( correlation(x,y,z)>maxCorrelation )
 			{
 				SquareMatrix< Real , 3 > _R = RotationMatrix( x , y , z );
-				if( correlationFraction<0 || ValidRotation( _R , n , correlation(x,y,z) ) )
+				if( parameters.correlationFraction<0 || ValidRotation( _R , n , correlation(x,y,z) ) )
 				{
 					maxCorrelation = correlation( x , y , z );
 					R = _R;
@@ -117,12 +123,56 @@ namespace SphericalGeometry
 			correlationValues.push_back( maxCorrelation );
 			rotations.push_back( R );
 		}
-		return N;
+		return (unsigned int)correlationValues.size();
+	}
+
+
+	template< typename Real >
+	void SO3Alignment< Real >::AlignVertexValues( const SphericalGeometry::Mesh< Real > &source , const SphericalGeometry::Mesh< Real > &target , const std::vector< Real > sourceSignals[] , const std::vector< Real > targetSignals[] , unsigned int signalNum , Parameters parameters , RotationGrid< Real > &correlation )
+	{
+		std::vector< SphericalGrid< Real > > sourceSGrids , targetSGrids;
+		for( int m=0 ; m<2 ; m++ )
+		{
+			const SphericalGeometry::Mesh< Real > &sMesh = m==0 ? source : target; 
+			std::vector< SphericalGrid< Real > > &sGrids = m==0 ? sourceSGrids : targetSGrids;
+			const std::vector< Real > *signals = m==0 ? sourceSignals : targetSignals;
+			sGrids.resize( signalNum );
+			for( unsigned int i=0 ; i<signalNum ; i++ )
+			{
+				sGrids[i].resize( (int)parameters.resolution );
+				SphericalGeometry::Tessellation< Real >::SampleVertexValues( sMesh.vertices , sMesh.polygons , signals[i] , sGrids[i] , parameters.epsilon );
+			}
+		}
+		SetCorrelation( signalNum , &sourceSGrids[0] , &targetSGrids[0] , parameters , correlation );
+	}
+
+	template< typename Real >
+	void SO3Alignment< Real >::AlignFaceIntegrals( const SphericalGeometry::Mesh< Real > &source , const SphericalGeometry::Mesh< Real > &target , const std::vector< Real > sourceSignals[] , const std::vector< Real > targetSignals[] , unsigned int signalNum , Parameters parameters , RotationGrid< Real > &correlation )
+	{
+		std::vector< SphericalGrid< Real > > sourceSGrids , targetSGrids;
+		for( int m=0 ; m<2 ; m++ )
+		{
+			const SphericalGeometry::Mesh< Real > &sMesh = m==0 ? source : target; 
+			std::vector< SphericalGrid< Real > > &sGrids = m==0 ? sourceSGrids : targetSGrids;
+			const std::vector< Real > *signals = m==0 ? sourceSignals : targetSignals;
+			sGrids.resize( signalNum );
+			for( unsigned int i=0 ; i<signalNum ; i++ )
+			{
+				sGrids[i].resize( (int)parameters.resolution );
+				SphericalGeometry::Tessellation< Real >::SampleFaceIntegrals( sMesh.vertices , sMesh.polygons , signals[i] , sGrids[i] , parameters.epsilon );
+			}
+		}
+		SetCorrelation( signalNum , &sourceSGrids[0] , &targetSGrids[0] , parameters , correlation );
 	}
 
 	template< typename Real >
 	void SO3Alignment< Real >::AlignVertexValues( const SphericalGeometry::Mesh< Real > &source , const SphericalGeometry::Mesh< Real > &target , const std::vector< Real > sourceSignals[] , const std::vector< Real > targetSignals[] , unsigned int signalNum , Parameters parameters , std::vector< SquareMatrix< Real , 3 > > &rotations , std::vector< Real > &correlationValues )
 	{
+#if 1
+		RotationGrid< Real > correlation;
+		AlignVertexValues( source , target , sourceSignals , targetSignals , signalNum , parameters , correlation );
+		TopNRotations( correlation , parameters , correlationValues , rotations );
+#else
 		std::vector< SphericalGrid< Real > > sourceSGrids , targetSGrids;
 		for( int m=0 ; m<2 ; m++ )
 		{
@@ -138,11 +188,17 @@ namespace SphericalGeometry
 		}
 
 		TopNRotations( parameters.maxRotations , signalNum , &sourceSGrids[0] , &targetSGrids[0] , parameters.sigma() , parameters.removeDC , parameters.rotationSeparation , parameters.correlationFraction , correlationValues , rotations );
+#endif
 	}
 
 	template< typename Real >
 	void SO3Alignment< Real >::AlignFaceIntegrals( const SphericalGeometry::Mesh< Real > &source , const SphericalGeometry::Mesh< Real > &target , const std::vector< Real > sourceSignals[] , const std::vector< Real > targetSignals[] , unsigned int signalNum , Parameters parameters , std::vector< SquareMatrix< Real , 3 > > &rotations , std::vector< Real > &correlationValues )
 	{
+#if 1
+		RotationGrid< Real > correlation;
+		AlignFaceIntegrals( source , target , sourceSignals , targetSignals , signalNum , parameters , correlation );
+		TopNRotations( correlation , parameters , correlationValues , rotations );
+#else
 		std::vector< SphericalGrid< Real > > sourceSGrids , targetSGrids;
 		for( int m=0 ; m<2 ; m++ )
 		{
@@ -158,6 +214,7 @@ namespace SphericalGeometry
 		}
 
 		TopNRotations( parameters.maxRotations , signalNum , &sourceSGrids[0] , &targetSGrids[0] , parameters.sigma , parameters.removeDC , parameters.rotationSeparation , parameters.correlationFraction , correlationValues , rotations );
+#endif
 	}
 
 }

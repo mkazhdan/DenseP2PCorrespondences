@@ -257,6 +257,7 @@ namespace SphericalGeometry
 			SphericalGrid< Real >::SetCoordinates( &(p[0]) , x , y );
 			x *= (Real)( _sGrid.resolution() / ( 2.*M_PI ) );
 			y *= (Real)( _sGrid.resolution() / M_PI );
+
 			int x0 = (int)floor(x) , y0 = (int)floor(y);
 			int x1 = x0+1 , y1 = y0+1;
 			y0 = std::max< int >( 0 , y0 ) , y1 = std::min< int >( y1 , _sGrid.resolution() );
@@ -300,9 +301,11 @@ namespace SphericalGeometry
 	{
 		// Compute the scale factors for every spherical cell
 		SphericalGeometry::Tessellation< Real >::SampleFaceIntegrals( _sMesh , _sMesh.masses , _sGrid , _params.epsilon );
+
 		// Take the logarithm
 #pragma omp parallel for
 		for( int i=0 ; i<_sGrid.resolution() ; i++ ) for( int j=0 ; j<_sGrid.resolution() ; j++ ) _sGrid(i,j) = (Real)log( _sGrid(i,j)*_areaScale );
+
 		_logScaleFactors.set( _sGrid );
 
 		// Smooth
@@ -311,9 +314,9 @@ namespace SphericalGeometry
 			for( int i=0 ; i<_key.bandWidth() ; i++ ) for( int j=0 ; j<=i ; j++ ) _key(i,j) *= (Real)exp( -_params.smoothness * i * ( (Real)(i+1) ) * 1. );
 			_hForm.InverseFourier( _key , _sGrid );
 
+			// Sample the smoothed (log) scale factors to the sphere vertices
+			_logScaleFactors.set( _sGrid );
 		}
-		// Sample the smoothed (log) scale factors to the sphere vertices
-		_logScaleFactors.set( _sGrid );
 
 		{
 			// Start by computing the per-face flow field

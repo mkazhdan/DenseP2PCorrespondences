@@ -439,14 +439,14 @@ template< class Real >
 void SphericalGeometry::Mesh< Real >::write( const char* fileName , const std::vector< Point3D< Real > >& vertices , bool binary ) const
 {
 	std::vector< PlyParametrizedVertex< float , Real > > _vertices( vertices.size() );
-	for( int i=0 ; i<vertices.size() ; i++ ) _vertices[i].point = Point3D< float >( vertices[i] ) , _vertices[i].param = Point3D< float >( this->vertices[i] );
+	for( int i=0 ; i<vertices.size() ; i++ ) _vertices[i].point = Point3D< float >( vertices[i] ) , _vertices[i].param = Point3D< Real >( this->vertices[i] );
 	PlyWritePolygons( fileName , _vertices , polygons , PlyParametrizedVertex< float , Real >::WriteProperties , PlyParametrizedVertex< float , Real >::WriteComponents , binary ? PLY_BINARY_NATIVE : PLY_ASCII , NULL , 0 );
 }
 template< class Real >
 void SphericalGeometry::Mesh< Real >::write( const char* fileName , const std::vector< Point3D< Real > >& vertices , const std::vector< Point3D< Real > >& colors , bool binary ) const
 {
 	std::vector< PlyParametrizedColorVertex< float , Real > > _vertices( vertices.size() );
-	for( int i=0 ; i<vertices.size() ; i++ ) _vertices[i].point = Point3D< float >( vertices[i] ) , _vertices[i].param = Point3D< float >( this->vertices[i] ) , _vertices[i].color = Point3D< float >( colors[i] );
+	for( int i=0 ; i<vertices.size() ; i++ ) _vertices[i].point = Point3D< float >( vertices[i] ) , _vertices[i].param = Point3D< Real >( this->vertices[i] ) , _vertices[i].color = Point3D< float >( colors[i] );
 	PlyWritePolygons( fileName , _vertices , polygons , PlyParametrizedColorVertex< float , Real >::WriteProperties , PlyParametrizedColorVertex< float , Real >::WriteComponents , binary ? PLY_BINARY_NATIVE : PLY_ASCII , NULL , 0 );
 }
 template< class Real >
@@ -1031,6 +1031,7 @@ void SphericalGeometry::ClippedDualTriangle< Real , Data >::split( Point3D< Real
 		}
 	}
 }
+
 
 /////////////////////////////////////
 // SphericalGeometry::Tessellation //
@@ -1742,6 +1743,7 @@ void SphericalGeometry::Tessellation< Real >::_SampleFaceIntegrals( const std::v
 			}
 		}
 	}
+
 #pragma omp parallel for
 	for( int i=0 ; i<sGrid.resolution() ; i++ ) for( int j=0 ; j<sGrid.resolution() ; j++ ) for( unsigned int t=0 ; t<threads ; t++ ) sGrid(i,j) += _sGrids[t](i,j);
 	delete[] _sGrids;

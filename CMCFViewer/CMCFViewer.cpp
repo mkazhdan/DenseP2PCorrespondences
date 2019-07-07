@@ -47,14 +47,14 @@ cmdLineParameter< char* >
 	In( "in" ) ,											// Input mesh
 	Out( "out" );											// Output spherical mesh
 cmdLineParameter< int >
-	Threads( "threads" , omp_get_num_procs() ) ,			// Number of parallelization threads
 	EvolutionSteps( "steps" , 100 ) ,						// Number of cMCF evolution steps to perform
-	CenterToInversion( "c2i" , DefaultCenterToInversion );	// Center to inversion conversion type
+	CenterToInversion( "c2i" , DefaultCenterToInversion ) ,	// Center to inversion conversion type
+	Threads( "threads" , omp_get_num_procs() );				// Number of parallelization threads
 cmdLineParameter< float >
 	StepSize( "stepSize" , 0.1f ) ,							// cMCF step size
 	CenteringCutOff( "cutOff" , 1e-10f );					// Centering cut-off
 cmdLineReadable
-	FullVerbose( "fullVerbose" ) , 							// Should very verbose output be provided?
+	FullVerbose( "fullVerbose" ) ,							// Should very verbose output be provided?
 	Verbose( "verbose" );									// Should verbose output be provided?
 
 void Usage( const char* ex )
@@ -69,7 +69,6 @@ void Usage( const char* ex )
 	printf( "\t\t0] Trivial\n" );
 	printf( "\t\t1] Golden section search\n" );
 	printf( "\t\t2] Poincare\n" );
-	printf( "\t[--%s]\n" , FullVerbose.name );
 	printf( "\t[--%s]\n" , Verbose.name );
 }
 
@@ -77,12 +76,13 @@ cmdLineReadable* params[] =
 {
 	&In ,
 	&Out ,
+	&Threads ,
 	&EvolutionSteps ,
 	&StepSize ,
 	&CenteringCutOff ,
 	&CenterToInversion ,
-	&FullVerbose ,
 	&Verbose ,
+	&FullVerbose ,
 	NULL
 };
 
@@ -175,14 +175,17 @@ int main( int argc , char* argv[] )
 		for( int i=0 ; i<EvolutionSteps.value ; i++ )
 		{
 			cmcf.advance();
+
 			if( FullVerbose.set )
 			{
 				currentStats = cmcf.getStats();
 				printf( "cMCF[%d] Delta / log(QC) / Radial: %.4f / %.4f / %.4f    \r" , i+1 , currentStats.deformationScale , log(currentStats.quasiConformalRatio) , currentStats.radialDeviation );
 			}
 		}
+
 		if( FullVerbose.set ) printf( "\n" );
 		sMesh.setMasses( vertices );
+		sMesh.makeUnitMass();
 
 #pragma omp parallel for
 		for( int i=0 ; i<sMesh.vertices.size() ; i++ ) sMesh.vertices[i] /= Length( sMesh.vertices[i] );
@@ -202,6 +205,7 @@ int main( int argc , char* argv[] )
 				if( FullVerbose.set ) printf( "%d] %g (%g %g %g)       \r" , iters+1 , Length( stats.center ) , stats.center[0] , stats.center[1] , stats.center[2] );
 				if( stats.center.squareNorm()<=CenteringCutOff.value*CenteringCutOff.value ) break;
 			}
+
 			if( FullVerbose.set ) printf( "\n" );
 			if( iters==MAX_ITERATIONS && CenterToInversion.value!=SphericalGeometry::MoebiusCentering< double >::Parameters::PARAMETERS_GOLDEN_SECTION_SEARCH )
 			{
@@ -220,7 +224,6 @@ int main( int argc , char* argv[] )
 			}
 			if( iters==MAX_ITERATIONS ) fprintf( stderr , "[WARNING] Failed to meet centering threshold after %d iterations\n" , MAX_ITERATIONS );
 		}
-
 		if( Out.set ) sMesh.write( Out.value , vertices , colors );
 
 		if( Verbose.set ) printf( "cMCF: %.2f(s)\n" , timer.elapsed() );

@@ -51,9 +51,13 @@ namespace SphericalGeometry
 			Real sigma( void ) const { return - (Real)log(bandLimitDampening) / ( resolution/2 * ( resolution/2 + 1 ) ); }
 		};
 
-		static void SetCorrelation( unsigned int gridNum , SphericalGrid< Real > source[] , SphericalGrid< Real > target[] , Real sigma , bool removeDC , RotationGrid< Real > &correlation );
-		static unsigned int TopNRotations( unsigned int N , unsigned int gridNum , SphericalGrid< Real > source[] , SphericalGrid< Real > target[] , Real sigma , bool removeDC , Real separation , Real correlationFraction , std::vector< Real > &correlationValues , std::vector< SquareMatrix< Real , 3 > > &rotations );
+		static void SetCorrelation( unsigned int gridNum , SphericalGrid< Real > source[] , SphericalGrid< Real > target[] , Parameters parameters , RotationGrid< Real > &correlation );
 
+		static unsigned int TopNRotations( const RotationGrid< Real > &correlation , Parameters parameters , std::vector< Real > &correlationValues , std::vector< SquareMatrix< Real , 3 > > &rotations );
+		static unsigned int TopNRotations( unsigned int gridNum , SphericalGrid< Real > source[] , SphericalGrid< Real > target[] , Parameters parameters , std::vector< Real > &correlationValues , std::vector< SquareMatrix< Real , 3 > > &rotations );
+
+		static void AlignVertexValues ( const SphericalGeometry::Mesh< Real > &source , const SphericalGeometry::Mesh< Real > &target , const std::vector< Real > sourceSignals[] , const std::vector< Real > targetSignals[] , unsigned int signalNum , Parameters parameters , RotationGrid< Real > &correlation );
+		static void AlignFaceIntegrals( const SphericalGeometry::Mesh< Real > &source , const SphericalGeometry::Mesh< Real > &target , const std::vector< Real > sourceSignals[] , const std::vector< Real > targetSignals[] , unsigned int signalNum , Parameters parameters , RotationGrid< Real > &correlation );
 		static void AlignVertexValues ( const SphericalGeometry::Mesh< Real > &source , const SphericalGeometry::Mesh< Real > &target , const std::vector< Real > sourceSignals[] , const std::vector< Real > targetSignals[] , unsigned int signalNum , Parameters parameters , std::vector< SquareMatrix< Real , 3 > > &rotations , std::vector< Real > &correlationValues );
 		static void AlignFaceIntegrals( const SphericalGeometry::Mesh< Real > &source , const SphericalGeometry::Mesh< Real > &target , const std::vector< Real > sourceSignals[] , const std::vector< Real > targetSignals[] , unsigned int signalNum , Parameters parameters , std::vector< SquareMatrix< Real , 3 > > &rotations , std::vector< Real > &correlationValues );
 

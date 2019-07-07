@@ -109,7 +109,7 @@ namespace SphericalGeometry
 #pragma omp parallel for reduction( + : differenceNorm , oldNorm )
 		for( int i=0 ; i<_M.rows ; i++ ) for( int j=0 ; j<_M.rowSizes[i] ; j++ ) 
 		{
-			differenceNorm += Point3D< Real >::Dot( _x[i]-_sMesh.vertices[_M[i][j].N] , _x[i]-_sMesh.vertices[_M[i][j].N] ) * _M[i][j].Value;
+			differenceNorm += Point3D< Real >::Dot( _x[i]-_sMesh.vertices[i] , _x[_M[i][j].N]-_sMesh.vertices[_M[i][j].N] ) * _M[i][j].Value;
 			oldNorm += Point3D< Real >::Dot( _x[i] , _x[_M[i][j].N] ) * _M[i][j].Value;
 		}
 		return (Real)sqrt( differenceNorm / oldNorm );
@@ -119,16 +119,13 @@ namespace SphericalGeometry
 	{
 		Real area = 0;
 		std::vector< Real > vertexAreas( _sMesh.vertices.size() , 0 );
-#pragma omp parallel for
 		for( int i=0 ; i<_sMesh.polygons.size() ; i++ )
 		{
 			Point3D< Real > v[] = { _sMesh.vertices[ _sMesh.polygons[i][0] ] , _sMesh.vertices[ _sMesh.polygons[i][1] ] , _sMesh.vertices[ _sMesh.polygons[i][2] ] };
 			Real a = (Real)Length( Point3D< Real >::CrossProduct( v[1]-v[0] , v[2]-v[0] ) ) / 2;
 			area += a;
 			a /= 3;
-			for( int j=0 ; j<3 ; j++ )
-#pragma omp atomic
-				vertexAreas[ _sMesh.polygons[i][j] ] += a;
+			for( int j=0 ; j<3 ; j++ ) vertexAreas[ _sMesh.polygons[i][j] ] += a;
 		}
 		Point3D< Real > center;
 		for( int i=0 ; i<_sMesh.vertices.size() ; i++ ) center += _sMesh.vertices[i] * vertexAreas[i];
@@ -164,7 +161,7 @@ namespace SphericalGeometry
 		{
 			Point3D< Real > v[] = { _sMesh.vertices[ _sMesh.polygons[i][0] ] , _sMesh.vertices[ _sMesh.polygons[i][1] ] , _sMesh.vertices[ _sMesh.polygons[i][2] ] };
 			Point3D< Real > c = ( v[0] + v[1] + v[2] ) / 3;
-			Real a = (Real)Length( Point3D< Real >::CrossProduct( v[1]-v[0] , v[2]-v[0] ) );
+			Real a = (Real)Length( Point3D< Real >::CrossProduct( v[1]-v[0] , v[2]-v[0] ) ) / 2;
 			centerX += c[0] * a;
 			centerY += c[1] * a;
 			centerZ += c[2] * a;
@@ -217,6 +214,7 @@ namespace SphericalGeometry
 			int j=0;
 			for( typename std::unordered_map< int , Real >::const_iterator iter=row.begin() ; iter!=row.end() ; iter++ ) M[i][j++] = MatrixEntry< Real , int >( iter->first , iter->second );
 		}
+		_ReorderMatrixEntries( M );
 		return M;
 	}
 
@@ -254,6 +252,17 @@ namespace SphericalGeometry
 		stiffness(1,1) = - ( stiffness(1,2) + stiffness(1,0) );
 		stiffness(2,2) = - ( stiffness(2,0) + stiffness(2,1) );
 		return stiffness;
+	}
+	template< typename Real >
+	void CMCF< Real >::_ReorderMatrixEntries( SparseMatrix< Real , int > &M )
+	{
+#pragma omp parallel for
+		for( int i=0 ; i<M.rows ; i++ )
+		{
+			MatrixEntry< Real , int > *begin = &M[i][0];
+			MatrixEntry< Real , int > *end = begin + M.rowSizes[i];
+			std::sort( begin , end , []( MatrixEntry< Real , int > &e1 , MatrixEntry< Real , int > &e2 ){ return e1.N<e2.N; } );
+		}
 	}
 
 	template< typename Real >

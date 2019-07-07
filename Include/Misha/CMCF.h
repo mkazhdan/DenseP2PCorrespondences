@@ -75,6 +75,7 @@ namespace SphericalGeometry
 		static SquareMatrix< Real , 2 > __TriangleMassMatrix( const Point3D< Real > v[] );
 		static SquareMatrix< Real , 3 > _TriangleMassMatrix( const Point3D< Real > vertices[] );
 		static SquareMatrix< Real , 3 > _TriangleStiffnessMatrix( const Point3D< Real > vertices[] );
+		static void _ReorderMatrixEntries( SparseMatrix< Real , int > &M );
 		template< typename TriangleMatrixFunctor > SparseMatrix< Real , int > _systemMatrix( TriangleMatrixFunctor F ) const;
 		SparseMatrix< Real , int > _massMatrix( void ) const { return _systemMatrix( _TriangleMassMatrix ); }
 		SparseMatrix< Real , int > _stiffnessMatrix( void ) const { return _systemMatrix( _TriangleStiffnessMatrix ); }

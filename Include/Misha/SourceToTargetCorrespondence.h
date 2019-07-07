@@ -128,6 +128,8 @@ void SourceTargetCorrespondences< Real >::WriteCorrespondences( const char *file
 {
 	FILE *fp = fopen( fileName , "w" );
 	if( !fp ) fprintf( stderr , "[ERROR] Failed to open correspondence file for writing: %s\n" , fileName ) , exit( 0 );
+	int idx;
+	float w[3];
 	for( int i=0 ; i<correspondences.size() ; i++ ) fprintf( fp , " %d %f %f %f\n" , (int)correspondences[i].tIndex , (float)correspondences[i].weights[0] , (float)correspondences[i].weights[1] , (float)correspondences[i].weights[2] );
 	fclose( fp );
 }
@@ -367,8 +369,8 @@ void Spectrum< Real >::set( const std::vector< Point3D< Real > > &vertices , con
 	{
 		Solver solver;
 		InverseOperator( const SparseMatrix< Real , int > &M ) : _M(M) , solver( M ){}
-		int rows( void ) const { return (int)_M.rows; }
-		int cols( void ) const { return (int)_M.rows; }
+		int rows( void ) const { return _M.rows; }
+		int cols( void ) const { return _M.rows; }
 		void perform_op( const Real *in , Real *out ) const { const_cast< Solver & >(solver).solve( in , out ); };
 	protected:
 		const SparseMatrix< Real , int > &_M;
@@ -378,8 +380,8 @@ void Spectrum< Real >::set( const std::vector< Point3D< Real > > &vertices , con
 	{
 		Solver solver;
 		InverseBOperator( const SparseMatrix< Real , int > &M ) : _M(M) , solver( M ){}
-		int rows( void ) const { return (int)_M.rows; }
-		int cols( void ) const { return (int)_M.rows; }
+		int rows( void ) const { return _M.rows; }
+		int cols( void ) const { return _M.rows; }
 		void solve( const Real *in , Real *out ) const { _M.Multiply( in , out ); }
 		void mat_prod( const Real *in , Real *out ) const { const_cast< Solver & >(solver).solve( in , out ); };
 	protected:
