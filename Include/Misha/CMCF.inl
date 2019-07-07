@@ -67,6 +67,9 @@ namespace SphericalGeometry
 		}
 #pragma omp parallel for
 		for( int i=0 ; i<_areas.size() ; i++ ) _areas[i] /= area;
+
+		_sMesh.setMasses( vertices );
+		_sMesh.makeUnitMass();
 	}
 
 	template< typename Real >

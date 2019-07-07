@@ -184,8 +184,6 @@ int main( int argc , char* argv[] )
 		}
 
 		if( FullVerbose.set ) printf( "\n" );
-		sMesh.setMasses( vertices );
-		sMesh.makeUnitMass();
 
 #pragma omp parallel for
 		for( int i=0 ; i<sMesh.vertices.size() ; i++ ) sMesh.vertices[i] /= Length( sMesh.vertices[i] );
