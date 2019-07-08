@@ -369,8 +369,8 @@ void Spectrum< Real >::set( const std::vector< Point3D< Real > > &vertices , con
 	{
 		Solver solver;
 		InverseOperator( const SparseMatrix< Real , int > &M ) : _M(M) , solver( M ){}
-		int rows( void ) const { return _M.rows; }
-		int cols( void ) const { return _M.rows; }
+		int rows( void ) const { return (int)_M.rows; }
+		int cols( void ) const { return (int)_M.rows; }
 		void perform_op( const Real *in , Real *out ) const { const_cast< Solver & >(solver).solve( in , out ); };
 	protected:
 		const SparseMatrix< Real , int > &_M;
@@ -380,8 +380,8 @@ void Spectrum< Real >::set( const std::vector< Point3D< Real > > &vertices , con
 	{
 		Solver solver;
 		InverseBOperator( const SparseMatrix< Real , int > &M ) : _M(M) , solver( M ){}
-		int rows( void ) const { return _M.rows; }
-		int cols( void ) const { return _M.rows; }
+		int rows( void ) const { return (int)_M.rows; }
+		int cols( void ) const { return (int)_M.rows; }
 		void solve( const Real *in , Real *out ) const { _M.Multiply( in , out ); }
 		void mat_prod( const Real *in , Real *out ) const { const_cast< Solver & >(solver).solve( in , out ); };
 	protected:

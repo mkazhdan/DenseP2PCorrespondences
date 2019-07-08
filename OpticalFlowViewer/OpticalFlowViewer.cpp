@@ -269,7 +269,10 @@ int _main( int argc , char *argv[] )
 					params.resolution = BaseResolution.value<<l;
 					typename SphericalGeometry::OpticalFlow< double , DivFree > opticalFlow( _sMeshes[0] , _sMeshes[1] , signals[0].values[l+1] , signals[1].values[l+1] , params );
 					for( int i=0 ; i<SolvesPerLevel.value ; i++ ) opticalFlow.advance();
-					if( l==levels-1 ) _advanceState = opticalFlow.getStats();
+				}
+				{
+					typename SphericalGeometry::OpticalFlow< double , DivFree > opticalFlow( _sMeshes[0] , _sMeshes[1] , signals[0].values[levels+1] , signals[1].values[levels+1] , params );
+					_advanceState = opticalFlow.getStats();
 				}
 				bool foundBetter = UseL2Difference.set ? ( _advanceState.l2Difference<advanceState.l2Difference ) : ( _advanceState.l1Difference<advanceState.l1Difference );
 				if( r==0 || foundBetter )
@@ -309,7 +312,10 @@ int _main( int argc , char *argv[] )
 				params.resolution = BaseResolution.value<<l;
 				typename SphericalGeometry::OpticalFlow< double , DivFree > opticalFlow( sMeshes[0] , sMeshes[1] , signals[0].values[l+1] , signals[1].values[l+1] , params );
 				for( int i=0 ; i<SolvesPerLevel.value ; i++ ) opticalFlow.advance();
-				if( l==levels-1 ) advanceState = opticalFlow.getStats();
+			}
+			{
+				typename SphericalGeometry::OpticalFlow< double , DivFree > opticalFlow( sMeshes[0] , sMeshes[1] , signals[0].values[levels+1] , signals[1].values[levels+1] , params );
+				_advanceState = opticalFlow.getStats();
 			}
 			if( Verbose.set )
 			{
