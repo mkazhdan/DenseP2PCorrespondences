@@ -315,7 +315,7 @@ int _main( int argc , char *argv[] )
 			}
 			{
 				typename SphericalGeometry::OpticalFlow< double , DivFree > opticalFlow( sMeshes[0] , sMeshes[1] , signals[0].values[levels+1] , signals[1].values[levels+1] , params );
-				_advanceState = opticalFlow.getStats();
+				advanceState = opticalFlow.getStats();
 			}
 			if( Verbose.set )
 			{
