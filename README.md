@@ -274,19 +274,23 @@ Given genus-zero source and target mesh files, <i>source.ply</i> and <i>target.p
 <OL>
 <LI>Computing the centered spherical parametrizations:
 <blockquote><code>
-% CMCFViewer --in source.ply --out source.cmcf.ply<br>
+% CMCFViewer --in source.ply --out source.cmcf.ply
 </code></blockquote>
 <blockquote><code>
 % CMCFViewer --in target.ply --out target.cmcf.ply
 </code></blockquote>
 <LI>Performing the authalic evolution:
 <blockquote><code>
-% AuthalicEvolutionViewer --in source.cmcf.ply --out source.cmcf.ae.ply<br>
+% AuthalicEvolutionViewer --in source.cmcf.ply --out source.cmcf.ae.ply
+</code></blockquote>
+<blockquote><code>
 % AuthalicEvolutionViewer --in target.cmcf.ply --out target.cmcf.ae.ply
 </code></blockquote>
 <LI>Computing the Heat Kernel Signatures to use as registration signals:
 <blockquote><code>
-% GetHKS --in source.ply --out source.signal<br>
+% GetHKS --in source.ply --out source.signal
+</code></blockquote>
+<blockquote><code>
 % GetHKS --in target.ply --out target.signal
 </code></blockquote>
 <LI>Registering the source and target:
