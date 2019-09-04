@@ -275,6 +275,8 @@ Given genus-zero source and target mesh files, <i>source.ply</i> and <i>target.p
 <LI>Computing the centered spherical parametrizations:
 <blockquote><code>
 % CMCFViewer --in source.ply --out source.cmcf.ply<br>
+</code></blockquote>
+<blockquote><code>
 % CMCFViewer --in target.ply --out target.cmcf.ply
 </code></blockquote>
 <LI>Performing the authalic evolution:
